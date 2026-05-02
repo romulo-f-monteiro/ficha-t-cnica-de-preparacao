@@ -70,7 +70,7 @@
         /* Ajustes de impressão */
         @media print {
             @page {
-                margin: 1cm;
+                margin: 0; /* Remove cabeçalhos e rodapés do navegador (URL, data, hora) */
                 size: A4;
             }
             body {
@@ -86,7 +86,7 @@
             }
             .a4-document {
                 box-shadow: none !important;
-                padding: 0 !important;
+                padding: 1.5cm !important; /* Substitui a margem da página por padding interno */
                 margin: 0 !important;
                 max-width: 100% !important;
                 width: 100% !important;
@@ -129,7 +129,7 @@
         <div class="max-w-5xl mx-auto px-2 sm:px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-utensils text-orange-500 text-xl"></i>
-                <h1 class="font-bold text-sm sm:text-lg hidden sm:block truncate">Ficha Técnica - RFM</h1>
+                <h1 class="font-bold text-sm sm:text-lg truncate">Ficha Técnica - RFM</h1>
             </div>
             <div class="flex gap-2 sm:gap-3">
                 <button onclick="clearForm()" class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors whitespace-nowrap">

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Técnica de preparação - RFM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .editable-input {
+            width: 100%;
+            background: transparent;
+            border: 1px dashed #cbd5e1;
+            border-radius: 4px;
+            padding: 4px 8px;
+            transition: all 0.2s;
+            color: #1e293b;
+        }
+        
+        .editable-input:focus {
+            outline: none;
+            border: 1px solid #3b82f6;
+            background: #f8fafc;
+        }
+
+        /* Hack para placeholder em div contenteditable */
+        [contenteditable]:empty::before {
+            content: attr(data-placeholder);
+            color: #94a3b8;
+            pointer-events: none;
+            display: block;
+        }
+
+        .tech-table th, .tech-table td {
+            border: 1px solid #94a3b8;
+        }
+
+        .tech-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .tech-table td {
+            padding: 0.25rem;
+            vertical-align: middle;
+        }
+
+        .img-preview-large {
+            width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            background-color: #f8fafc;
+        }
+
+        /* Ajustes de impressão */
+        @media print {
+            @page {
+                margin: 1cm;
+                size: A4;
+            }
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .a4-document {
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .editable-input {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                color: black !important;
+            }
+            .tech-table th {
+                background-color: #e2e8f0 !important;
+                color: black !important;
+            }
+            .tech-table th, .tech-table td {
+                border: 1px solid black !important;
+            }
+            tr, .extra-photo-wrapper {
+                page-break-inside: avoid;
+            }
+            
+            /* Remove placeholder texts in print if empty */
+            [contenteditable]:empty::before {
+                content: "";
+            }
+            
+            .img-preview-large {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 900px !important;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-20">
+
+    <!-- Barra Fixa Superior -->
+    <div class="fixed top-0 left-0 right-0 bg-white shadow-md z-50 no-print">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-utensils text-orange-500 text-xl"></i>
+                <h1 class="font-bold text-lg hidden sm:block">Ficha Técnica de preparação - RFM</h1>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="clearForm()" class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+                    <i class="fa-solid fa-trash-can mr-2"></i> Limpar
+                </button>
+                <button onclick="window.print()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow transition-colors">
+                    <i class="fa-solid fa-file-pdf mr-2"></i> Salvar / PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container Principal (Página A4) -->
+    <div class="pt-24 px-4">
+        <div class="a4-document bg-white max-w-5xl mx-auto shadow-lg rounded-sm p-8 sm:p-12 mb-10">
+            
+            <!-- Título do Documento -->
+            <div class="text-center border-b-2 border-slate-800 pb-4 mb-6">
+                <h1 class="text-2xl font-bold uppercase tracking-wider">Ficha Técnica - RFM</h1>
+            </div>
+
+            <!-- Cabeçalho -->
+            <div class="flex flex-col md:flex-row gap-6 mb-8">
+                <div class="flex-1 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <label class="font-semibold text-sm whitespace-nowrap uppercase">Preparação:</label>
+                        <input type="text" class="editable-input text-lg font-medium" placeholder="Ex: Macarrão ao Alho e Óleo">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3">
+                            <label class="font-semibold text-sm whitespace-nowrap uppercase">Nº de Porções:</label>
+                            <input type="number" id="global-portions" class="editable-input text-center" value="1" min="1" oninput="calculateAll()">
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <label class="font-semibold text-sm whitespace-nowrap uppercase">Categoria:</label>
+                            <input type="text" class="editable-input" placeholder="Ex: Prato Principal">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Box da Foto Principal -->
+                <div class="w-full md:w-48 h-48 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center relative overflow-hidden group">
+                    <img id="main-photo-preview" class="absolute inset-0 w-full h-full object-cover hidden" alt="Foto da Preparação">
+                    <div class="text-center p-4 z-10 no-print" id="main-photo-placeholder">
+                        <i class="fa-solid fa-camera text-3xl text-slate-400 mb-2"></i>
+                        <p class="text-xs text-slate-500">Adicionar foto da porção</p>
+                    </div>
+                    <label class="absolute inset-0 w-full h-full cursor-pointer z-20 no-print">
+                        <input type="file" accept="image/*" onchange="loadMainPhoto(event)">
+                    </label>
+                    <button id="main-remove-photo-btn" onclick="removeMainPhoto()" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center z-30 hidden no-print hover:bg-red-600 shadow">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabela de Ingredientes -->
+            <div class="mb-2">
+                <table class="tech-table w-full text-sm">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="w-1/4">Ingredientes</th>
+                            <th colspan="3">Per capita (g/mL)</th>
+                            <th rowspan="2" class="w-24">Quant. Total<br>(Bruta)</th>
+                            <th rowspan="2" class="w-1/5">Medida Caseira</th>
+                            <th rowspan="2" class="w-24">Preço por<br>Kg/L (R$)</th>
+                            <th rowspan="2" class="w-24">Custo<br>(R$)</th>
+                            <th rowspan="2" class="w-10 no-print">Ação</th>
+                        </tr>
+                        <tr>
+                            <th class="w-20">PL</th>
+                            <th class="w-20">FC</th>
+                            <th class="w-24">PB</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ingredients-body">
+                        <!-- Linhas geradas via JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8" class="text-right font-bold py-2 bg-slate-50 uppercase text-xs">Custo Total da Receita (R$)</td>
+                            <td class="text-right font-bold bg-slate-50 px-2 text-base" id="total-recipe-cost">0,00</td>
+                            <td class="bg-slate-50 no-print"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="text-xs text-slate-500 mt-2 font-medium">
+                    * LEGENDA: <strong class="text-slate-700">PL</strong> (Peso Líquido sem aparas) | <strong class="text-slate-700">FC</strong> (Fator de Correção) | <strong class="text-slate-700">PB</strong> (Peso Bruto com aparas)
+                </div>
+                <div class="mt-3 text-right no-print">
+                    <button onclick="addIngredientRow()" class="px-4 py-2 text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 font-medium rounded transition-colors">
+                        <i class="fa-solid fa-plus mr-1"></i> Adicionar Ingrediente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modo de Preparo e Indicadores -->
+            <div class="border border-slate-900 mb-8 mt-6">
+                <div class="bg-slate-100 border-b border-slate-900 p-2">
+                    <h3 class="font-bold text-sm uppercase">Modo de Preparo</h3>
+                </div>
+                <div class="p-3 border-b border-slate-900">
+                    <!-- Usando contenteditable para auto-expandir o texto no PDF -->
+                    <div class="editable-input w-full min-h-[120px] whitespace-pre-wrap outline-none" contenteditable="true" data-placeholder="Descreva o passo a passo do preparo aqui."></div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-slate-900 text-xs">
+                    <div class="p-2 flex flex-col justify-center text-center">
+                        <span class="font-bold uppercase mb-1">Tempo de preparo:</span>
+                        <input type="text" class="editable-input text-center" placeholder="Ex: 30 min">
+                    </div>
+                    <div class="p-2 flex flex-col justify-center text-center">
+                        <span class="font-bold uppercase mb-1">Tempo de cocção:</span>
+                        <input type="text" class="editable-input text-center" placeholder="Ex: 15 min">
+                    </div>
+                    <div class="p-2 flex flex-col justify-center text-center">
+                        <span class="font-bold uppercase mb-1">Fator de cocção:</span>
+                        <input type="text" class="editable-input text-center" placeholder="Ex: 0,95">
+                    </div>
+                    <div class="p-2 flex flex-col justify-center text-center">
+                        <span class="font-bold uppercase mb-1">Porção (g):</span>
+                        <input type="text" class="editable-input text-center" placeholder="Ex: 150g">
+                    </div>
+                    <div class="p-2 flex flex-col justify-center bg-orange-50 text-center">
+                        <span class="font-bold uppercase mb-1 text-orange-800">Custo per capita:</span>
+                        <div class="font-bold text-lg text-orange-700">
+                            R$ <span id="cost-per-capita">0,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- NOVA SESSÃO: CALCULADORA NUTRICIONAL AUTOMÁTICA -->
+            <!-- ========================================== -->
+            <div class="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4 no-print">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-blue-900 text-sm uppercase"><i class="fa-solid fa-calculator mr-2"></i>Calculadora Nutricional (Oculta no PDF)</h3>
+                    <button onclick="addNutriRow()" class="px-3 py-1 text-xs text-blue-700 bg-blue-100 hover:bg-blue-200 font-medium rounded transition-colors">
+                        <i class="fa-solid fa-plus"></i> Adicionar Alimento
+                    </button>
+                </div>
+                <p class="text-xs text-blue-700 mb-4">Insira os valores nutricionais dos alimentos a cada <strong>100g</strong>. O sistema somará tudo e calculará o valor por porção automaticamente para o quadro final!</p>
+                
+                <table class="w-full text-xs text-center border-collapse bg-white">
+                    <thead class="bg-blue-100 text-blue-900">
+                        <tr>
+                            <th class="border border-blue-200 p-1">Ingrediente</th>
+                            <th class="border border-blue-200 p-1">PL Usado (g/mL)</th>
+                            <th class="border border-blue-200 p-1">Kcal<br>(em 100g)</th>
+                            <th class="border border-blue-200 p-1">Carb.<br>(em 100g)</th>
+                            <th class="border border-blue-200 p-1">Prot.<br>(em 100g)</th>
+                            <th class="border border-blue-200 p-1">Gord.<br>(em 100g)</th>
+                            <th class="border border-blue-200 p-1">Fibra<br>(em 100g)</th>
+                            <th class="border border-blue-200 p-1">Sódio<br>(em 100g)</th>
+                            <th class="border border-blue-200 p-1">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nutri-body">
+                        <!-- Linhas geradas no JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RESULTADO FINAL NUTRICIONAL (IMPRESSO) -->
+            <div class="border border-slate-900 mb-10 mt-6">
+                <div class="bg-slate-100 border-b border-slate-900 p-2">
+                    <h3 class="font-bold text-sm uppercase text-center">Valor Nutritivo Estimado (Por Porção)</h3>
+                </div>
+                <div class="grid grid-cols-3 md:grid-cols-6 divide-x divide-y md:divide-y-0 divide-slate-900 text-center text-sm">
+                    <div class="p-3">
+                        <div class="font-bold uppercase text-xs text-slate-500 mb-1">Kcal</div>
+                        <input type="text" id="out-kcal" class="editable-input text-center font-medium" placeholder="0.0">
+                    </div>
+                    <div class="p-3">
+                        <div class="font-bold uppercase text-xs text-slate-500 mb-1">Carboidratos (g)</div>
+                        <input type="text" id="out-cho" class="editable-input text-center font-medium" placeholder="0.0">
+                    </div>
+                    <div class="p-3">
+                        <div class="font-bold uppercase text-xs text-slate-500 mb-1">Proteínas (g)</div>
+                        <input type="text" id="out-ptn" class="editable-input text-center font-medium" placeholder="0.0">
+                    </div>
+                    <div class="p-3">
+                        <div class="font-bold uppercase text-xs text-slate-500 mb-1">Lipídios (g)</div>
+                        <input type="text" id="out-lip" class="editable-input text-center font-medium" placeholder="0.0">
+                    </div>
+                    <div class="p-3">
+                        <div class="font-bold uppercase text-xs text-slate-500 mb-1">Fibras (g)</div>
+                        <input type="text" id="out-fib" class="editable-input text-center font-medium" placeholder="0.0">
+                    </div>
+                    <div class="p-3">
+                        <div class="font-bold uppercase text-xs text-slate-500 mb-1">Sódio (mg)</div>
+                        <input type="text" id="out-sod" class="editable-input text-center font-medium" placeholder="0.0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galeria de Imagens Adicionais -->
+            <div class="mt-8 border-t-2 border-dashed border-slate-300 pt-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold uppercase text-slate-800">Galeria de Imagens Extras</h3>
+                    <button onclick="addExtraPhoto()" class="px-4 py-2 text-sm text-green-600 bg-green-50 hover:bg-green-100 font-medium rounded no-print transition-colors">
+                        <i class="fa-solid fa-image mr-1"></i> Adicionar Foto
+                    </button>
+                </div>
+                
+                <div id="extra-photos-container" class="space-y-8">
+                    <!-- Fotos Extras inseridas aqui -->
+                </div>
+            </div>
+
+            <!-- Assinaturas e Rodapé -->
+            <div class="mt-16 pt-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-sm border-t-2 border-slate-800">
+                <div>
+                    <input type="text" class="editable-input text-center font-medium block w-full border-b border-slate-800 rounded-none mb-2" placeholder="Nome do Profissional">
+                    <span class="uppercase font-bold text-xs">Elaborado por</span>
+                </div>
+                <div>
+                    <input type="text" class="editable-input text-center font-medium block w-full border-b border-slate-800 rounded-none mb-2" placeholder="Ex: CRN / Registro">
+                    <span class="uppercase font-bold text-xs">Registro Profissional</span>
+                </div>
+                <div>
+                    <input type="date" class="editable-input text-center font-medium block w-full border-b border-slate-800 rounded-none mb-2">
+                    <span class="uppercase font-bold text-xs">Data de Criação</span>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center text-xs text-slate-400 font-medium">
+                Criado por <a href="https://www.instagram.com/romulof.monteiro/" target="_blank" class="text-blue-500 hover:text-blue-700 hover:underline">Rômulo Ferreira Monteiro <i class="fa-brands fa-instagram"></i></a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // Formatações
+        function formatMoney(num) {
+            return num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        function formatMacro(num) {
+            return num.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        }
+        function parseNum(val) {
+            if (!val) return 0;
+            return parseFloat(val.replace(',', '.')) || 0;
+        }
+
+        // ================= CUSTOS E INGREDIENTES =================
+
+        function addIngredientRow() {
+            const tbody = document.getElementById('ingredients-body');
+            const tr = document.createElement('tr');
+            
+            tr.innerHTML = `
+                <td><input type="text" class="editable-input" placeholder="Nome do ingrediente"></td>
+                <td><input type="number" step="0.01" class="editable-input text-center ing-pl" placeholder="0" oninput="calculateAll()"></td>
+                <td><input type="number" step="0.01" class="editable-input text-center ing-fc" value="1" oninput="calculateAll()"></td>
+                <td class="text-center px-2 bg-slate-50"><span class="ing-pb font-medium">0,00</span></td>
+                <td class="text-center px-2 bg-slate-50 text-blue-800"><span class="ing-qt font-bold">0,00</span></td>
+                <td><input type="text" class="editable-input text-center" placeholder="Ex: 1 xícara"></td>
+                <td><input type="number" step="0.01" class="editable-input text-center ing-preco" placeholder="0" oninput="calculateAll()"></td>
+                <td class="text-right px-2 bg-slate-50 text-green-700"><span class="ing-custo font-bold">0,00</span></td>
+                <td class="text-center no-print">
+                    <button onclick="removeRow(this)" class="text-red-500 hover:text-red-700 p-1 rounded">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function removeRow(btn) {
+            btn.closest('tr').remove();
+            calculateAll();
+        }
+
+        // Motor Central de Cálculos de Custo
+        function calculateAll() {
+            const portions = parseNum(document.getElementById('global-portions').value) || 1;
+            const rows = document.querySelectorAll('#ingredients-body tr');
+            let totalCost = 0;
+
+            rows.forEach(row => {
+                const pl = parseNum(row.querySelector('.ing-pl').value);
+                const fc = parseNum(row.querySelector('.ing-fc').value) || 1;
+                const precoKg = parseNum(row.querySelector('.ing-preco').value);
+
+                // Cálculo Base
+                const pb = pl * fc;
+                const qt = pb * portions; // A Quantidade Total precisa multiplicar pelas porções
+                const custo = (qt / 1000) * precoKg;
+
+                totalCost += custo;
+
+                // Escrevendo as respostas visuais na linha
+                row.querySelector('.ing-pb').textContent = formatMoney(pb);
+                row.querySelector('.ing-qt').textContent = formatMoney(qt);
+                row.querySelector('.ing-custo').textContent = formatMoney(custo);
+            });
+
+            // Atualização dos Painéis de Custo
+            document.getElementById('total-recipe-cost').textContent = formatMoney(totalCost);
+            const perCapita = totalCost / portions;
+            document.getElementById('cost-per-capita').textContent = formatMoney(perCapita);
+            
+            // Aproveita para recalcular os nutrientes sempre que as porções mudarem
+            calculateNutrition();
+        }
+
+
+        // ================= CÁLCULOS NUTRICIONAIS =================
+
+        function addNutriRow() {
+            const tbody = document.getElementById('nutri-body');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="border border-blue-200 p-1"><input type="text" class="w-full bg-transparent outline-none border-b border-blue-200 text-center" placeholder="Alimento"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-pl" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-kcal" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-cho" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-ptn" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-lip" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-fib" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-sod" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1 no-print">
+                    <button onclick="removeNutriRow(this)" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-xmark"></i></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function removeNutriRow(btn) {
+            btn.closest('tr').remove();
+            calculateNutrition();
+        }
+
+        function calculateNutrition() {
+            const portions = parseNum(document.getElementById('global-portions').value) || 1;
+            const rows = document.querySelectorAll('#nutri-body tr');
+            
+            let totKcal = 0, totCho = 0, totPtn = 0, totLip = 0, totFib = 0, totSod = 0;
+
+            rows.forEach(row => {
+                const pl = parseNum(row.querySelector('.n-pl').value);
+                const factor = pl / 100; // Porque os valores estão em 100g
+
+                totKcal += parseNum(row.querySelector('.n-kcal').value) * factor;
+                totCho  += parseNum(row.querySelector('.n-cho').value) * factor;
+                totPtn  += parseNum(row.querySelector('.n-ptn').value) * factor;
+                totLip  += parseNum(row.querySelector('.n-lip').value) * factor;
+                totFib  += parseNum(row.querySelector('.n-fib').value) * factor;
+                totSod  += parseNum(row.querySelector('.n-sod').value) * factor;
+            });
+
+            // A tabela nutricional é para a receita inteira. Tem que dividir pela porção para mostrar o resultado final.
+            document.getElementById('out-kcal').value = formatMacro(totKcal / portions);
+            document.getElementById('out-cho').value = formatMacro(totCho / portions);
+            document.getElementById('out-ptn').value = formatMacro(totPtn / portions);
+            document.getElementById('out-lip').value = formatMacro(totLip / portions);
+            document.getElementById('out-fib').value = formatMacro(totFib / portions);
+            document.getElementById('out-sod').value = formatMacro(totSod / portions);
+        }
+
+
+        // ================= IMAGENS E GALERIA =================
+
+        function loadMainPhoto(event) {
+            const input = event.target;
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('main-photo-preview');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    document.getElementById('main-photo-placeholder').classList.add('hidden');
+                    document.getElementById('main-remove-photo-btn').classList.remove('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeMainPhoto() {
+            const img = document.getElementById('main-photo-preview');
+            img.src = '';
+            img.classList.add('hidden');
+            document.getElementById('main-photo-placeholder').classList.remove('hidden');
+            document.getElementById('main-remove-photo-btn').classList.add('hidden');
+        }
+
+        let photoCounter = 0;
+        function addExtraPhoto() {
+            photoCounter++;
+            const id = 'extra-photo-' + photoCounter;
+            const container = document.getElementById('extra-photos-container');
+            
+            const div = document.createElement('div');
+            div.className = "extra-photo-wrapper relative border border-slate-300 rounded-lg p-4 bg-slate-50";
+            
+            div.innerHTML = `
+                <button onclick="this.parentElement.remove()" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center z-30 no-print hover:bg-red-600 shadow transition-colors">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+
+                <div class="w-full min-h-[300px] border-2 border-dashed border-slate-300 rounded bg-white flex flex-col items-center justify-center relative overflow-hidden group mb-3">
+                    <img id="preview-${id}" class="img-preview-large absolute inset-0 hidden">
+                    
+                    <div id="placeholder-${id}" class="text-center p-8 z-10 no-print">
+                        <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-400 mb-3"></i>
+                        <p class="text-sm font-medium text-slate-600">Clique para selecionar imagem</p>
+                    </div>
+                    
+                    <label class="absolute inset-0 w-full h-full cursor-pointer z-20 no-print">
+                        <input type="file" accept="image/*" onchange="loadExtraPhoto(event, '${id}')">
+                    </label>
+                </div>
+                
+                <div class="text-center mt-2">
+                    <div class="editable-input w-full min-h-[40px] whitespace-pre-wrap outline-none font-medium text-slate-700 bg-white" contenteditable="true" data-placeholder="Digite uma legenda para esta foto..."></div>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        function loadExtraPhoto(event, id) {
+            const input = event.target;
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('preview-' + id);
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    // Torna relativo na impressão e preview para não quebrar a página mantendo proporção grande
+                    img.classList.add('relative'); 
+                    document.getElementById('placeholder-' + id).classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        // ================= LIMPEZA GERAL =================
+        function clearForm() {
+            if(confirm('Atenção: Tem certeza que deseja limpar a ficha técnica inteira?')) {
+                document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => {
+                    if(el.id !== 'global-portions' && !el.classList.contains('ing-fc')) {
+                        el.value = '';
+                    }
+                });
+                
+                document.querySelectorAll('[contenteditable]').forEach(el => {
+                    el.innerHTML = '';
+                });
+
+                document.getElementById('global-portions').value = 1;
+
+                document.getElementById('ingredients-body').innerHTML = '';
+                addIngredientRow(); addIngredientRow(); addIngredientRow();
+
+                document.getElementById('nutri-body').innerHTML = '';
+                addNutriRow(); addNutriRow();
+
+                document.getElementById('extra-photos-container').innerHTML = '';
+
+                removeMainPhoto();
+                calculateAll();
+            }
+        }
+
+        // Inicialização
+        window.onload = () => {
+            addIngredientRow(); addIngredientRow(); addIngredientRow();
+            addNutriRow(); addNutriRow();
+        };
+    </script>
+</body>
+</html>

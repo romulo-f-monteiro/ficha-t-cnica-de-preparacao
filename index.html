@@ -96,6 +96,7 @@
                 background: transparent !important;
                 padding: 0 !important;
                 color: black !important;
+                min-width: 0 !important; /* Garante que os inputs encolham no PDF */
             }
             .tech-table th {
                 background-color: #e2e8f0 !important;
@@ -103,6 +104,7 @@
             }
             .tech-table th, .tech-table td {
                 border: 1px solid black !important;
+                min-width: 0 !important; /* Garante que as colunas encolham no PDF */
             }
             tr, .extra-photo-wrapper {
                 page-break-inside: avoid;
@@ -212,8 +214,10 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="8" class="text-right font-bold py-2 bg-slate-50 uppercase text-xs">Custo Total da Receita (R$)</td>
-                                <td class="text-right font-bold bg-slate-50 px-2 text-base" id="total-recipe-cost">0,00</td>
+                                <!-- Corrigido colspan de 8 para 7 e adicionado padding na direita (pr-4) -->
+                                <td colspan="7" class="text-right font-bold py-2 pr-4 bg-slate-50 uppercase text-xs">Custo Total da Receita (R$)</td>
+                                <!-- Valor centralizado para alinhar com a coluna Custo -->
+                                <td class="text-center font-bold bg-slate-50 px-2 text-base" id="total-recipe-cost">0,00</td>
                                 <td class="bg-slate-50 no-print"></td>
                             </tr>
                         </tfoot>

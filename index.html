@@ -126,44 +126,44 @@
 
     <!-- Barra Fixa Superior -->
     <div class="fixed top-0 left-0 right-0 bg-white shadow-md z-50 no-print">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="max-w-5xl mx-auto px-2 sm:px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-utensils text-orange-500 text-xl"></i>
-                <h1 class="font-bold text-lg hidden sm:block">Ficha Técnica de Preparação - RFM</h1>
+                <h1 class="font-bold text-sm sm:text-lg hidden sm:block truncate">Ficha Técnica - RFM</h1>
             </div>
-            <div class="flex gap-3">
-                <button onclick="clearForm()" class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
-                    <i class="fa-solid fa-trash-can mr-2"></i> Limpar
+            <div class="flex gap-2 sm:gap-3">
+                <button onclick="clearForm()" class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors whitespace-nowrap">
+                    <i class="fa-solid fa-trash-can mr-1 sm:mr-2"></i> Limpar
                 </button>
-                <button onclick="window.print()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow transition-colors">
-                    <i class="fa-solid fa-file-pdf mr-2"></i> Salvar / PDF
+                <button onclick="window.print()" class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow transition-colors whitespace-nowrap">
+                    <i class="fa-solid fa-file-pdf mr-1 sm:mr-2"></i> Salvar / PDF
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Container Principal (Página A4) -->
-    <div class="pt-24 px-4">
-        <div class="a4-document bg-white max-w-5xl mx-auto shadow-lg rounded-sm p-8 sm:p-12 mb-10">
+    <div class="pt-20 sm:pt-24 px-2 sm:px-4">
+        <div class="a4-document bg-white max-w-5xl mx-auto shadow-lg rounded-sm p-4 sm:p-8 md:p-12 mb-10">
             
             <!-- Título do Documento -->
             <div class="text-center border-b-2 border-slate-800 pb-4 mb-6">
-                <h1 class="text-2xl font-bold uppercase tracking-wider">Ficha Técnica - RFM</h1>
+                <h1 class="text-xl sm:text-2xl font-bold uppercase tracking-wider">Ficha Técnica - RFM</h1>
             </div>
 
             <!-- Cabeçalho -->
             <div class="flex flex-col md:flex-row gap-6 mb-8">
                 <div class="flex-1 space-y-4">
-                    <div class="flex items-center gap-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                         <label class="font-semibold text-sm whitespace-nowrap uppercase">Preparação:</label>
-                        <input type="text" class="editable-input text-lg font-medium" placeholder="Ex: Macarrão ao Alho e Óleo">
+                        <input type="text" class="editable-input text-base sm:text-lg font-medium" placeholder="Ex: Macarrão ao Alho e Óleo">
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="flex items-center gap-3">
                             <label class="font-semibold text-sm whitespace-nowrap uppercase">Nº de Porções:</label>
                             <input type="number" id="global-portions" class="editable-input text-center" value="1" min="1" oninput="calculateAll()">
                         </div>
-                        <div class="flex items-center gap-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                             <label class="font-semibold text-sm whitespace-nowrap uppercase">Categoria:</label>
                             <input type="text" class="editable-input" placeholder="Ex: Prato Principal">
                         </div>
@@ -171,7 +171,7 @@
                 </div>
 
                 <!-- Box da Foto Principal -->
-                <div class="w-full md:w-48 h-48 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center relative overflow-hidden group">
+                <div class="w-full md:w-48 h-48 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center relative overflow-hidden group mx-auto md:mx-0 shrink-0">
                     <img id="main-photo-preview" class="absolute inset-0 w-full h-full object-cover hidden" alt="Foto da Preparação">
                     <div class="text-center p-4 z-10 no-print" id="main-photo-placeholder">
                         <i class="fa-solid fa-camera text-3xl text-slate-400 mb-2"></i>
@@ -188,39 +188,42 @@
 
             <!-- Tabela de Ingredientes -->
             <div class="mb-2">
-                <table class="tech-table w-full text-sm">
-                    <thead>
-                        <tr>
-                            <th rowspan="2" class="w-1/4">Ingredientes</th>
-                            <th colspan="3">Per capita (g/mL)</th>
-                            <th rowspan="2" class="w-24">Quant. Total<br>(Bruta)</th>
-                            <th rowspan="2" class="w-1/5">Medida Caseira</th>
-                            <th rowspan="2" class="w-24">Preço por<br>Kg/L (R$)</th>
-                            <th rowspan="2" class="w-24">Custo<br>(R$)</th>
-                            <th rowspan="2" class="w-10 no-print">Ação</th>
-                        </tr>
-                        <tr>
-                            <th class="w-20">PL</th>
-                            <th class="w-20">FC</th>
-                            <th class="w-24">PB</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ingredients-body">
-                        <!-- Linhas geradas via JavaScript -->
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="8" class="text-right font-bold py-2 bg-slate-50 uppercase text-xs">Custo Total da Receita (R$)</td>
-                            <td class="text-right font-bold bg-slate-50 px-2 text-base" id="total-recipe-cost">0,00</td>
-                            <td class="bg-slate-50 no-print"></td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <!-- Wrapper com overflow-x-auto para mobile -->
+                <div class="overflow-x-auto print:overflow-visible w-full pb-2 rounded border border-slate-200 print:border-none">
+                    <table class="tech-table w-full text-sm min-w-[800px] print:min-w-full">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="w-1/4 min-w-[150px]">Ingredientes</th>
+                                <th colspan="3">Per capita (g/mL)</th>
+                                <th rowspan="2" class="w-24 min-w-[90px]">Quant. Total<br>(Bruta)</th>
+                                <th rowspan="2" class="w-1/5 min-w-[120px]">Medida Caseira</th>
+                                <th rowspan="2" class="w-24 min-w-[90px]">Preço por<br>Kg/L (R$)</th>
+                                <th rowspan="2" class="w-24 min-w-[90px]">Custo<br>(R$)</th>
+                                <th rowspan="2" class="w-10 no-print">Ação</th>
+                            </tr>
+                            <tr>
+                                <th class="w-20 min-w-[70px]">PL</th>
+                                <th class="w-20 min-w-[70px]">FC</th>
+                                <th class="w-24 min-w-[80px]">PB</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ingredients-body">
+                            <!-- Linhas geradas via JavaScript -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8" class="text-right font-bold py-2 bg-slate-50 uppercase text-xs">Custo Total da Receita (R$)</td>
+                                <td class="text-right font-bold bg-slate-50 px-2 text-base" id="total-recipe-cost">0,00</td>
+                                <td class="bg-slate-50 no-print"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
                 <div class="text-xs text-slate-500 mt-2 font-medium">
                     * LEGENDA: <strong class="text-slate-700">PL</strong> (Peso Líquido sem aparas) | <strong class="text-slate-700">FC</strong> (Fator de Correção) | <strong class="text-slate-700">PB</strong> (Peso Bruto com aparas)
                 </div>
                 <div class="mt-3 text-right no-print">
-                    <button onclick="addIngredientRow()" class="px-4 py-2 text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 font-medium rounded transition-colors">
+                    <button onclick="addIngredientRow()" class="px-4 py-2 text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 font-medium rounded transition-colors w-full sm:w-auto">
                         <i class="fa-solid fa-plus mr-1"></i> Adicionar Ingrediente
                     </button>
                 </div>
@@ -232,11 +235,10 @@
                     <h3 class="font-bold text-sm uppercase">Modo de Preparo</h3>
                 </div>
                 <div class="p-3 border-b border-slate-900">
-                    <!-- Usando contenteditable para auto-expandir o texto no PDF -->
                     <div class="editable-input w-full min-h-[120px] whitespace-pre-wrap outline-none" contenteditable="true" data-placeholder="Descreva o passo a passo do preparo aqui."></div>
                 </div>
                 
-                <div class="grid grid-cols-2 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-slate-900 text-xs">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-slate-900 text-xs">
                     <div class="p-2 flex flex-col justify-center text-center">
                         <span class="font-bold uppercase mb-1">Tempo de preparo:</span>
                         <input type="text" class="editable-input text-center" placeholder="Ex: 30 min">
@@ -249,11 +251,11 @@
                         <span class="font-bold uppercase mb-1">Fator de cocção:</span>
                         <input type="text" class="editable-input text-center" placeholder="Ex: 0,95">
                     </div>
-                    <div class="p-2 flex flex-col justify-center text-center">
+                    <div class="p-2 flex flex-col justify-center text-center border-t border-slate-900 md:border-t-0">
                         <span class="font-bold uppercase mb-1">Porção (g):</span>
                         <input type="text" class="editable-input text-center" placeholder="Ex: 150g">
                     </div>
-                    <div class="p-2 flex flex-col justify-center bg-orange-50 text-center">
+                    <div class="p-2 flex flex-col justify-center bg-orange-50 text-center col-span-2 sm:col-span-1 border-t border-slate-900 md:border-t-0">
                         <span class="font-bold uppercase mb-1 text-orange-800">Custo per capita:</span>
                         <div class="font-bold text-lg text-orange-700">
                             R$ <span id="cost-per-capita">0,00</span>
@@ -265,33 +267,35 @@
             <!-- ========================================== -->
             <!-- NOVA SESSÃO: CALCULADORA NUTRICIONAL AUTOMÁTICA -->
             <!-- ========================================== -->
-            <div class="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4 no-print">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="font-bold text-blue-900 text-sm uppercase"><i class="fa-solid fa-calculator mr-2"></i>Calculadora Nutricional (Oculta no PDF)</h3>
-                    <button onclick="addNutriRow()" class="px-3 py-1 text-xs text-blue-700 bg-blue-100 hover:bg-blue-200 font-medium rounded transition-colors">
+            <div class="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 no-print">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
+                    <h3 class="font-bold text-blue-900 text-sm uppercase"><i class="fa-solid fa-calculator mr-2"></i>Calculadora Nutricional <span class="hidden sm:inline">(Oculta no PDF)</span></h3>
+                    <button onclick="addNutriRow()" class="px-3 py-1 text-xs text-blue-700 bg-blue-100 hover:bg-blue-200 font-medium rounded transition-colors w-full sm:w-auto">
                         <i class="fa-solid fa-plus"></i> Adicionar Alimento
                     </button>
                 </div>
                 <p class="text-xs text-blue-700 mb-4">Insira os valores nutricionais dos alimentos a cada <strong>100g</strong>. O sistema somará tudo e calculará o valor por porção automaticamente para o quadro final!</p>
                 
-                <table class="w-full text-xs text-center border-collapse bg-white">
-                    <thead class="bg-blue-100 text-blue-900">
-                        <tr>
-                            <th class="border border-blue-200 p-1">Ingrediente</th>
-                            <th class="border border-blue-200 p-1">PL Usado (g/mL)</th>
-                            <th class="border border-blue-200 p-1">Kcal<br>(em 100g)</th>
-                            <th class="border border-blue-200 p-1">Carb.<br>(em 100g)</th>
-                            <th class="border border-blue-200 p-1">Prot.<br>(em 100g)</th>
-                            <th class="border border-blue-200 p-1">Gord.<br>(em 100g)</th>
-                            <th class="border border-blue-200 p-1">Fibra<br>(em 100g)</th>
-                            <th class="border border-blue-200 p-1">Sódio<br>(em 100g)</th>
-                            <th class="border border-blue-200 p-1">Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody id="nutri-body">
-                        <!-- Linhas geradas no JS -->
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto w-full pb-2 rounded print:overflow-visible border border-blue-200">
+                    <table class="w-full text-xs text-center border-collapse bg-white min-w-[700px] print:min-w-full">
+                        <thead class="bg-blue-100 text-blue-900">
+                            <tr>
+                                <th class="border border-blue-200 p-1 min-w-[120px]">Ingrediente</th>
+                                <th class="border border-blue-200 p-1 min-w-[80px]">PL Usado (g/mL)</th>
+                                <th class="border border-blue-200 p-1 min-w-[70px]">Kcal<br>(em 100g)</th>
+                                <th class="border border-blue-200 p-1 min-w-[70px]">Carb.<br>(em 100g)</th>
+                                <th class="border border-blue-200 p-1 min-w-[70px]">Prot.<br>(em 100g)</th>
+                                <th class="border border-blue-200 p-1 min-w-[70px]">Gord.<br>(em 100g)</th>
+                                <th class="border border-blue-200 p-1 min-w-[70px]">Fibra<br>(em 100g)</th>
+                                <th class="border border-blue-200 p-1 min-w-[70px]">Sódio<br>(em 100g)</th>
+                                <th class="border border-blue-200 p-1">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="nutri-body">
+                            <!-- Linhas geradas no JS -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- RESULTADO FINAL NUTRICIONAL (IMPRESSO) -->
@@ -299,28 +303,28 @@
                 <div class="bg-slate-100 border-b border-slate-900 p-2">
                     <h3 class="font-bold text-sm uppercase text-center">Valor Nutritivo Estimado (Por Porção)</h3>
                 </div>
-                <div class="grid grid-cols-3 md:grid-cols-6 divide-x divide-y md:divide-y-0 divide-slate-900 text-center text-sm">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 divide-x divide-y md:divide-y-0 divide-slate-900 text-center text-sm">
                     <div class="p-3">
                         <div class="font-bold uppercase text-xs text-slate-500 mb-1">Kcal</div>
                         <input type="text" id="out-kcal" class="editable-input text-center font-medium" placeholder="0.0">
                     </div>
-                    <div class="p-3">
+                    <div class="p-3 border-t-0 sm:border-t-0">
                         <div class="font-bold uppercase text-xs text-slate-500 mb-1">Carboidratos (g)</div>
                         <input type="text" id="out-cho" class="editable-input text-center font-medium" placeholder="0.0">
                     </div>
-                    <div class="p-3">
+                    <div class="p-3 border-t border-slate-900 sm:border-t-0">
                         <div class="font-bold uppercase text-xs text-slate-500 mb-1">Proteínas (g)</div>
                         <input type="text" id="out-ptn" class="editable-input text-center font-medium" placeholder="0.0">
                     </div>
-                    <div class="p-3">
+                    <div class="p-3 border-t border-slate-900 md:border-t-0">
                         <div class="font-bold uppercase text-xs text-slate-500 mb-1">Lipídios (g)</div>
                         <input type="text" id="out-lip" class="editable-input text-center font-medium" placeholder="0.0">
                     </div>
-                    <div class="p-3">
+                    <div class="p-3 border-t border-slate-900 md:border-t-0">
                         <div class="font-bold uppercase text-xs text-slate-500 mb-1">Fibras (g)</div>
                         <input type="text" id="out-fib" class="editable-input text-center font-medium" placeholder="0.0">
                     </div>
-                    <div class="p-3">
+                    <div class="p-3 border-t border-slate-900 md:border-t-0">
                         <div class="font-bold uppercase text-xs text-slate-500 mb-1">Sódio (mg)</div>
                         <input type="text" id="out-sod" class="editable-input text-center font-medium" placeholder="0.0">
                     </div>
@@ -328,10 +332,13 @@
             </div>
 
             <!-- Galeria de Imagens Adicionais -->
-            <div class="mt-8 border-t-2 border-dashed border-slate-300 pt-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-bold uppercase text-slate-800">Galeria de Imagens Extras</h3>
-                    <button onclick="addExtraPhoto()" class="px-4 py-2 text-sm text-green-600 bg-green-50 hover:bg-green-100 font-medium rounded no-print transition-colors">
+            <div id="gallery-section" class="mt-8 border-t-2 border-dashed border-slate-300 pt-8 print:hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold uppercase text-slate-800">Galeria de Imagens Extras</h3>
+                        <p class="text-xs text-slate-500 font-medium no-print mt-1">* Esta seção ficará oculta no PDF se nenhuma foto for adicionada.</p>
+                    </div>
+                    <button onclick="addExtraPhoto()" class="px-4 py-2 text-sm text-green-600 bg-green-50 hover:bg-green-100 font-medium rounded no-print transition-colors w-full sm:w-auto shrink-0">
                         <i class="fa-solid fa-image mr-1"></i> Adicionar Foto
                     </button>
                 </div>
@@ -385,13 +392,13 @@
             const tr = document.createElement('tr');
             
             tr.innerHTML = `
-                <td><input type="text" class="editable-input" placeholder="Nome do ingrediente"></td>
-                <td><input type="number" step="0.01" class="editable-input text-center ing-pl" placeholder="0" oninput="calculateAll()"></td>
-                <td><input type="number" step="0.01" class="editable-input text-center ing-fc" value="1" oninput="calculateAll()"></td>
+                <td><input type="text" class="editable-input min-w-[140px]" placeholder="Nome do ingrediente"></td>
+                <td><input type="number" step="0.01" class="editable-input text-center ing-pl min-w-[60px]" placeholder="0" oninput="calculateAll()"></td>
+                <td><input type="number" step="0.01" class="editable-input text-center ing-fc min-w-[60px]" value="1" oninput="calculateAll()"></td>
                 <td class="text-center px-2 bg-slate-50"><span class="ing-pb font-medium">0,00</span></td>
                 <td class="text-center px-2 bg-slate-50 text-blue-800"><span class="ing-qt font-bold">0,00</span></td>
-                <td><input type="text" class="editable-input text-center" placeholder="Ex: 1 xícara"></td>
-                <td><input type="number" step="0.01" class="editable-input text-center ing-preco" placeholder="0" oninput="calculateAll()"></td>
+                <td><input type="text" class="editable-input text-center min-w-[100px]" placeholder="Ex: 1 xícara"></td>
+                <td><input type="number" step="0.01" class="editable-input text-center ing-preco min-w-[70px]" placeholder="0" oninput="calculateAll()"></td>
                 <td class="text-right px-2 bg-slate-50 text-green-700"><span class="ing-custo font-bold">0,00</span></td>
                 <td class="text-center no-print">
                     <button onclick="removeRow(this)" class="text-red-500 hover:text-red-700 p-1 rounded">
@@ -447,16 +454,16 @@
             const tbody = document.getElementById('nutri-body');
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="border border-blue-200 p-1"><input type="text" class="w-full bg-transparent outline-none border-b border-blue-200 text-center" placeholder="Alimento"></td>
-                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-pl" placeholder="0" oninput="calculateNutrition()"></td>
-                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-kcal" placeholder="0" oninput="calculateNutrition()"></td>
-                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-cho" placeholder="0" oninput="calculateNutrition()"></td>
-                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-ptn" placeholder="0" oninput="calculateNutrition()"></td>
-                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-lip" placeholder="0" oninput="calculateNutrition()"></td>
-                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-fib" placeholder="0" oninput="calculateNutrition()"></td>
-                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-sod" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="text" class="w-full bg-transparent outline-none border-b border-blue-200 text-center min-w-[100px]" placeholder="Alimento"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-pl min-w-[60px]" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-kcal min-w-[50px]" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-cho min-w-[50px]" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-ptn min-w-[50px]" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-lip min-w-[50px]" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-fib min-w-[50px]" placeholder="0" oninput="calculateNutrition()"></td>
+                <td class="border border-blue-200 p-1"><input type="number" step="0.01" class="w-full bg-transparent outline-none text-center n-sod min-w-[50px]" placeholder="0" oninput="calculateNutrition()"></td>
                 <td class="border border-blue-200 p-1 no-print">
-                    <button onclick="removeNutriRow(this)" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-xmark"></i></button>
+                    <button onclick="removeNutriRow(this)" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-xmark"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -520,6 +527,19 @@
             document.getElementById('main-remove-photo-btn').classList.add('hidden');
         }
 
+        // Função para ocultar a galeria na impressão caso esteja vazia
+        function checkGalleryEmpty() {
+            const container = document.getElementById('extra-photos-container');
+            const section = document.getElementById('gallery-section');
+            if (!container || !section) return;
+            
+            if (container.children.length === 0) {
+                section.classList.add('print:hidden');
+            } else {
+                section.classList.remove('print:hidden');
+            }
+        }
+
         let photoCounter = 0;
         function addExtraPhoto() {
             photoCounter++;
@@ -530,7 +550,7 @@
             div.className = "extra-photo-wrapper relative border border-slate-300 rounded-lg p-4 bg-slate-50";
             
             div.innerHTML = `
-                <button onclick="this.parentElement.remove()" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center z-30 no-print hover:bg-red-600 shadow transition-colors">
+                <button onclick="this.parentElement.remove(); checkGalleryEmpty();" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center z-30 no-print hover:bg-red-600 shadow transition-colors">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
 
@@ -552,6 +572,7 @@
                 </div>
             `;
             container.appendChild(div);
+            checkGalleryEmpty();
         }
 
         function loadExtraPhoto(event, id) {
@@ -596,6 +617,7 @@
 
                 removeMainPhoto();
                 calculateAll();
+                checkGalleryEmpty();
             }
         }
 
@@ -603,6 +625,7 @@
         window.onload = () => {
             addIngredientRow(); addIngredientRow(); addIngredientRow();
             addNutriRow(); addNutriRow();
+            checkGalleryEmpty();
         };
     </script>
 </body>
